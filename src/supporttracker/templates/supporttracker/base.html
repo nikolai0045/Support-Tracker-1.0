@@ -1,0 +1,69 @@
+{% load staticfiles %}
+<html>
+	<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+	<script src="{% static '/static/js/jquery.formset.js' %}"></script>
+	<script src="https://use.fontawesome.com/260cebdd83.js"></script>
+	{% block scripts %}
+	{% endblock scripts %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"></link>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"></link>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css"></link>
+
+	<style>
+	.dropdown:hover .dropdown-menu {
+		display: block;
+	}
+	</style>
+	
+	<title>COLEX Support Tracker</title>
+	
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class='pull-left'>
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/home">CO Lexington Support Tracker</a>
+					</div>
+					<ul class="nav navbar-nav">
+						<li><a href='/home'>Home</a></li>
+						<li class="dropdown">
+							<a href='/contact_list' class="dropdown-toggle">Contacts</a>
+							<ul class = "dropdown-menu">
+								<li><a href='/contact_list'>view contacts</a></li>
+								<li><a href='/new_contact'>add contact</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href='/supporter_list/' class="dropdown-toggle">Gifts/Pledges</a>
+							<ul class="dropdown-menu">
+								<li><a href='/supporter_list/'>view gifts</a></li>
+								<li><a href='/record_gift/'>add gift</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href='/profile' class="dropdown-toggle">{{user.userprofile}}</a>
+							<ul class="dropdown-menu">
+								<li><a href='/logout/'>log out</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class='pull-right' style='padding-top:10px'>
+					<a href='/settings/'><span class="glyphicon glyphicon-wrench"></span></a>
+				</div>
+			</div>
+		</nav>
+		{% block content %}
+		{% endblock content %}
+	</body>
+	<footer>
+		<div class='footer' style="height:100px">
+		</div>
+	</footer>
+</html>

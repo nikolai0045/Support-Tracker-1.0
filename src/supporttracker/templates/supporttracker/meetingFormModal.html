@@ -1,0 +1,89 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-dialog modal-sm">
+	<form id="ajax_form_modal_result" class="modal-content">
+		<div id="ajax_form_modal_result_div">
+			{{ form.media }}
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Record Meeting</h4>
+			</div>
+			<div class="modal-body">
+				{% csrf_token %}
+				<div class="form-group">
+					{% for field in form %}
+						{% if field = form.stage %}
+							{% include 'supporttracker/stageForm.html' %}
+						{% else %}
+							{{field|as_crispy_field}}
+						{% endif %}
+					{% endfor %}
+				</div>
+				
+				<hr>
+
+				<u><i><a href='#referrals_div' data-toggle='collapse'>Add referrals</a></i></u>
+				<div id="referrals_div" class='collapse'>
+					<h4>Referrals</h4>
+					{{ referral_formset.management_form }}
+					<div id="ref_form_set" class="container">
+						{% for ref_form in referral_formset.forms %}
+							<div class='form-group' id='ref{{ref_count.count}}'>
+								{{ref_form|crispy}}
+							</div>
+						{% endfor %}
+					</div>
+					<u><i><a id="add_referral">Add another</a></i></u>
+					<div id="ref_empty_form" style="display:none">
+						<hr>
+						<table class='no_error'>
+							{{ referral_formset.empty_form|crispy }}
+						</table>
+					</div>
+				</div>
+				
+				<hr>
+				
+				<u><i><a href="#reminders_div" data-toggle='collapse'>Add reminders</a></i></u>
+				<div id="reminders_div" class='collapse'>
+					<h4>Reminders</h4>
+					{{reminder_formset.management_form}}
+					<div id="rem_form_set" class="container">
+						{% for rem_form in reminder_formset.forms %}
+							<table class="no_error form-group">
+								{{rem_form|crispy}}
+							</table>
+						{% endfor %}
+					</div>
+					
+					<u><i><a id="add_reminder">Add another</a></i></u>
+					<div id="rem_empty_form" style="display:none">
+						<hr>
+						<table class="no_error">
+							{{ reminder_formset.empty_form|crispy }}
+						</table>
+					</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" type="submit" name="submit">Save</button>
+			</div>
+ 			<script>
+				$('#add_reminder').click(function() {
+					var form_idx = $('#id_form-TOTAL_FORMS').val();
+					$('#rem_form_set').append($('#rem_empty_form').html().replace(/__prefix__/g, form_idx));
+					$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+				});
+			</script>
+			<script>
+				$('#add_referral').click(function() {
+					var form_idx = $('#id_form-TOTAL_FORMS').val();
+					$('#ref_form_set').append($('#ref_empty_form').html().replace(/__prefix__/g, form_idx));
+					$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+				});
+			</script>
+		</div>
+	</form>
+</div>
+

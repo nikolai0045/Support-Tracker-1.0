@@ -1,0 +1,98 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-dialog modal-sm" style="width:70%;">
+	<form id="ajax_form_modal_result" class="modal-content" method="post" action="/{{meeting_id}}/record_meeting/">
+		<div id="ajax_form_modal_result_div">
+			{{form.media}}
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Record Call</h4>
+			</div>
+			<div class="modal-body">
+				{% csrf_token %}
+				<div class="form-group">
+					{{form.errors}}
+					{{form.answered_hidden}}
+					{{form.left_message_hidden}}
+					<div class="fieldWrapper">
+						{% if form.contact %}
+							{{ form.contact|as_crispy_field }}
+						{% endif %}
+					</div>
+					<div class='fieldWrapper'>
+						{% if form.call_id %}
+							{{ form.call_id }}
+						{% endif %}
+					</div>
+					<div class="fieldWrapper">
+						{{ form.date|as_crispy_field }}
+					</div>
+					<div class='fieldWrapper'>
+						{{ form.time|as_crispy_field }}
+					</div>
+ 					<div class="fieldWrapper">
+						{{ form.answered_cb.label_tag }}
+						{{ form.answered_cb}}
+					</div>
+					<div class='fieldWrapper' id='stageSubForm'>
+						{% include "supporttracker/stageForm.html" %}
+					</div>
+				</div>
+				<div class="form-group" id="leftMessageCb">
+ 					<div class="fieldWrapper">
+						{{ form.left_message_cb.label_tag }}
+						{{ form.left_message_cb }}
+					</div>
+				</div>
+				<div class="form-group" id="callNote">
+					<div class="fieldWrapper">
+						{{ form.note|as_crispy_field }}
+					</div>
+				</div>
+				<div class="form-group" id="voiceMailNote">
+					<div class="fieldWrapper">
+						{{ form.voice_mail_note|as_crispy_field }}
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" type="submit" name="submit">Save</button>
+			</div>
+		</div>
+		<script>
+			$('#answered_cb').change(
+				function(){
+					if (this.checked) {
+						$('#answered_hidden').val(true);
+						$('#voiceMailNote').hide()
+						$('#leftMessageCb').hide()
+						$('#callNote').show()
+					} else {
+						$('#answered_hidden').val(false);
+						$('#leftMessageCb').show();
+						$('#callNote').hide();
+					}
+				}
+			);
+			
+			$('#left_message_cb').change(
+				function(){
+					if (this.checked) {
+						$('#left_message_hidden').val(true);
+						$('#voiceMailNote').show();
+					} else {
+						$('#left_message_hidden').val(false);
+						$('#voiceMailNote').hide();
+					}
+				}
+			);
+			
+			$(document).ready(function() {
+				$('#leftMessageCb').hide();
+				$('#voiceMailNote').hide();
+				$('#left_message_hidden').val(false);
+			});
+		</script>
+	</form>
+</div>
+

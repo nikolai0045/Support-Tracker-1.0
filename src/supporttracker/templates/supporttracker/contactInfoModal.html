@@ -1,0 +1,63 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-dialog">
+	<form id="ajax_info_modal_result" class="modal-content">
+		<div id="ajax_info_modal_result_div">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h2>{{contact.first_name}} {% if contact.spouse_name != '' and contact.spouse_name != None %}and {{contact.spouse_name}}{%endif%} {{contact.last_name}}</h2>
+			</div>
+			<div class='modal-body container'>
+				<div>
+					<table class = "table table-condensed">
+						<tr>
+							<th>Basic Contact Info</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td>Phone number</td>
+							<td>{{contact.phone_number}}</td>
+						</tr>
+						<tr>
+							<td>Street address</td>
+							<td>{{contact.street_address}}</td>
+						</tr>
+						<tr>
+							<td>City</td>
+							<td>{{contact.city}}</td>
+						</tr>
+						<tr>
+							<td>State</td>
+							<td>{{contact.state}}</td>
+						</tr>
+						<tr>
+							<td>ZIP</td>
+							<td>{{contact.zip}}</td>
+						</tr>
+						{% if contact_rel.referred_by != '' and contact_rel.referred_by != None %}
+						<tr>
+							<td>Referred by</td>
+							<td>{{contact_rel.referred_by}}</td>
+						</tr>
+						<tr>
+							<td>Referral note</td>
+							<td>{{contact_rel.referral_note}}</td>
+						</tr>
+						{% endif %}
+						<tr>
+							<td>Date added</td>
+							<td>{{contact_rel.date_added}}</td>
+						</tr>
+						<tr>
+							<td>Stage</td>
+							<td>{{contact_rel.get_stage_display}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href='/{{contact_rel.pk}}/contact_profile/' class='btn btn-info'>View their contact page</a>
+			</div>
+		</div>
+	</form>
+</div>

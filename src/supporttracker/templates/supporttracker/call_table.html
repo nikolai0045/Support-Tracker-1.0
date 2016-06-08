@@ -1,0 +1,31 @@
+<thead>
+	<th>Name</th>
+	<th>Phone Number</th>
+	<th>Call Note</th>
+	<th>Referred by</th>
+	<th>Referral Note</th>
+	<th></th>
+</thead>
+<tbody>
+	{% for call in calls %}
+		<tr id="callRow{{call.pk}}">
+				<td>{{call.contact.first_name}} {% if call.contact.spouse_name != None and call.contact.spouse_name != '' %}and {{call.contact.spouse_name}} {% endif %}{{call.contact.last_name}}</td>
+				<td>{{call.contact.phone_number}}</td>	
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><a class="recordCall modalConnect" href="/{{call.pk}}/record_call/" table_to_update="#tabTable" modal="#callFormModal">Record</a></td>
+		</tr>
+	{% endfor %}
+	{% if not calls %}
+		<tr>
+			<td>No calls to make</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	{% endif %}
+</tbody>
+

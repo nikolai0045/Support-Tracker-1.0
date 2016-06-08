@@ -1,0 +1,219 @@
+{% extends "supporttracker/base.html" %}
+
+{% block content %}
+<div class="container">
+	<h2>{{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%} {{rel.contact.last_name}}</h2>
+	<div class='col-md-4'>
+		<h3>Contact Info</h3>
+		<p>Phone number: {{rel.contact.phone_number}}</p>
+		<p>
+			<td>Street address</td>
+			<td>{{contact.street_address}}</td>
+		</p>
+		<p>City: {{rel.contact.city}}</p>
+		<p>State: {{rel.contact.state}}</p>
+		<p>ZIP: {{rel.contact.zip}}</p>
+		{% if contact_rel.referred_by != '' and contact_rel.referred_by != None %}
+		<p>Referred by: {{rel.referred_by}}</p>
+		<p>Referral note: {{rel.referral_note}}</p>
+		{% endif %}
+		<p>Date added: {{rel.date_added}}</p>
+		<p>Stage: {{rel.get_stage_display}}</p>
+	</div>
+	<div class='col-md-4'>
+		<h3>Giving Info</h3>
+		<table class='table table-condensed'>
+		{% if gifts %}
+		<tr>
+			<th>Amount</th>
+			<th>Frequency</th>
+			<th>Start date</th>
+		<tr>
+		{% for gift in gifts %}
+		<tr>
+			<td>${{gift.amount}}</td>
+			<td>{{gift.frequency}}</td>
+			<td>{{gift.start_date}}</td>
+		<tr>
+		{% endfor %}
+		{% else %}
+		<tr>
+			<td>This person is not currently giving to your ministry</td>
+		</tr>
+		{% endif %}
+		</table>
+		<p>
+			<a href='/{{rel.contact.pk}}/record_gift/'>Record a gift from this person</a>
+		</p>
+	</div>
+	<div class='col-md-4'>
+		<h3>Additional Info</h3>
+		<p>No additional information to show at this time</p>
+	</div>
+
+</div>
+<div class='container'>
+	<div class="tab-content">
+		<ul class="nav nav-tabs">
+			<li class='active'><a data-toggle="tab" href="#messages">Messages</a></li>
+			<li><a data-toggle="tab" href="#calls">Calls</a></li>
+			<li><a data-toggle="tab" href="#meetings">Meetings</a></li>  
+			<li><a data-toggle="tab" href="#follow_ups">Follow Ups</a></li>
+			<li><a data-toggle="tab" href="#thankYous">Thank Yous</a></li>
+			<li><a data-toggle="tab" href="#reminders">Reminders</a></li>
+		</ul>
+	</div>
+	<div class='tab-content'>
+		<div id="messages" class="tab-pane fade in active">
+			<h3>Messages sent to {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Method</th>
+					<th>Note</th>
+				</tr>
+				{% for message in messages %}
+				<tr>
+					<td>{{message.date_to_send}}</td>
+					<td>{{message.method}}</td>
+					<td>{{message.note}}</td>
+				</tr>
+				{% endfor %}
+				{% if not messages %}
+				<tr>
+					<td>You have not sent any messages to this person</td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div id="calls" class="tab-pane fade">
+			<h3>Calls made to {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Answered</th>
+					<th>Left message</th>
+					<th>Note</th>
+				</tr>
+				{% for call in calls %}
+				<tr>
+					<td>{{call.date}}</td>
+					<td>{{call.time}}</td>
+					<td>{% if call.answered == True %}Yes{%else%}No{%endif%}</td>
+					<td>{% if call.left_message == True %}Yes{%else%}No{%endif%}</td>
+					<td>{% if call.answered == False and call.left_message == True and call.voice_mail != None %}{{call.voice_mail.note}}{%else%}{{call.note}}{%endif%}</td>
+				</tr>
+				{% endfor %}
+				{% if not calls %}
+				<tr>
+					<td>You have not made any calls to this person<td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div id="meetings" class="tab-pane fade">
+			<h3>Meetings with {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Location</th>
+					<th>Note</th>
+				</tr>
+				{% for meeting in meetings %}
+				<tr>
+					<td>{{meeting.date}}</td>
+					<td>{{meeting.time}}</td>
+					<td>{{meeting.location}}</td>
+					<td>{{meeting.note}}</td>
+				</tr>
+				{% endfor %}
+				{% if not meetings %}
+				<tr>
+					<td>You have not met with this person</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div id="follow_ups" class="tab-pane fade">
+			<h3>Follow ups with {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Method</th>
+					<th>Note</th>
+				</tr>
+				{% for follow_up in follow_ups %}
+				<tr>
+					<td>{{follow_up.date}}</td>
+					<td>{{follow_up.time}}</td>
+					<td>{{follow_up.method}}</td>
+					<td>{{follow_up.note}}</td>
+				</tr>
+				{% endfor %}
+				{% if not follow_ups %}
+				<tr>
+					<td>You have not conducted a follow up with this person</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div id="thankYous" class="tab-pane fade">
+			<h3>Thank you notes to {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Note</th>
+				</tr>
+				{% for thank_you in thank_yous %}
+				<tr>
+					<td>{{thank_you.date}}</td>
+					<td>{{thank_you.note}}</td>
+				</tr>
+				{% endfor %}
+				{% if not thank_yous %}
+				<tr>
+					<td>You have not sent any thank you notes to this person</td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div id="reminders" class="tab-pane fade">
+			<h3>Reminders about {{rel.contact.first_name}} {%if rel.contact.spouse_name != '' and rel.contact.spouse_name != None%}and {{rel.contact.spouse_name}}{%endif%}</h3>
+			<table class='table table-condensed'>
+				<tr>
+					<th>Date</th>
+					<th>Note</th>
+				</tr>
+				{% for reminder in reminders %}
+				<tr>
+					<td>{{reminder.remind_date}}</td>
+					<td>{{reminder.note}}</td>
+				</tr>
+				{% endfor %}
+				{% if not reminders %}
+				<tr>
+					<td>You have not set any reminders about this person</td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock content %}

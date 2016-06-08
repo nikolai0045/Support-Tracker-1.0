@@ -1,0 +1,74 @@
+{% extends 'supporttracker/base.html' %}
+
+{% block scripts %} 
+<script type="text/javascript">
+	$(document).ready(function() {
+		modalConnect();
+		deleteRel();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ajaxStop(function(){
+		modalConnect();
+		deleteRel();
+	});
+</script>
+<script type="text/javascript">
+	function modalConnect(){
+		$(".modalConnect").unbind('click');
+		$(".modalConnect").click(function(ev){
+			ev.preventDefault();
+			var url = this.href;
+			var modal = $(this).attr('modal');
+			$.get(url, function(data){
+				var info = $("#ajax_info_modal_result",data);
+				$(modal).empty().append(info);
+				$(modal).modal({show:true});
+			}, "html");
+			return false;
+		});
+	}
+	
+</script>
+<script type='text/javascript'>
+	function deleteRel(){
+		$('.deleteSupportRel').unbind('click');
+		$('.deleteSupportRel').click(function(ev){
+			ev.preventDefault();
+			console.log(this);
+			var url = $(this).data('url');
+			$.get(url, function(response){
+				console.log(url);
+				$('#supportTable').empty();
+				$('#supportTable').html(response);
+				$('#supportTable').show();
+			}, 'html');
+			return false;
+		});	
+	}
+</script>
+
+{% endblock scripts %}
+
+{% block content %}
+{% load extra_tags %}
+
+<div id="contactInfoModal" class="modal fade" role="dialog"></div>
+<div class = 'container'>
+	<h3>Current Supporters</h3>
+	<div class="table-responsive">
+		<table class="table table-condensed table-hover">
+			<thead>
+				<th>Name</th>
+				<th>Gift Amount</th>
+				<th>Gift Frequency</th>
+				<th>Gift Start Date</th>
+				<th></th>
+			</thead>
+			<tbody data-link="row" class="rowlink" id='supportTable'>
+				{% include 'supporttracker/supporter_list_table.html' %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,21 @@
+<thead>
+	<th>Name</th>
+	<th>Phone Number</th>
+	<th></th>
+</thead>
+<tbody>
+{% for fup in follow_ups %}
+	<tr>
+			<td>{{fup.contact.first_name}} {% if fup.contact.spouse_name != None and fup.contact.spouse_name != '' %}and {{fup.contact.spouse_name}} {% endif %}{{fup.contact.last_name}}</td>
+			<td>{{fup.contact.phone_number}}</td>	
+			<td><a class="recordFollowUp modalConnect" href="/{{fup.pk}}/record_follow_up/" table_to_update="#tabTable" modal="#followUpFormModal">Record</a></td>
+	</tr>
+{% endfor %}
+{% if not follow_ups %}
+	<tr>
+		<td>No follows ups to make</td>
+		<td></td>
+		<td></td>
+	</tr>
+{% endif %}
+</tbody>

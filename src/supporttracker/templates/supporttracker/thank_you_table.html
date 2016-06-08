@@ -1,0 +1,23 @@
+<thead>
+	<th>Name</th>
+	<th>Address</th>
+	<th>Send by</th>
+	<th>Mark as sent</th>
+</thead>
+<tbody>
+{% for ty in thank_yous %}
+	<tr>
+			<td>{{ty.contact.first_name}} {% if ty.contact.spouse_name != None and ty.contact.spouse_name != '' %}and {{ty.contact.spouse_name}} {% endif %}{{ty.contact.last_name}}</td>
+			<td>{{ty.contact.street_address}}</br>{{ty.contact.city}}{% if ty.contact.state != '' and ty.contact.zip != '' %}, {{ty.contact.state}} {{ty.contact.zip}}{%endif%}</td>	
+			<td>{{ty.date}}</td>
+			<td><a class="modalConnect" href="/{{ty.pk}}/record_thank_you/" table_to_update="#tabTable" modal="#thankYouModal">Record</a></td>
+	</tr>
+{% endfor %}
+{% if not thank_yous %}
+	<tr>
+		<td>No thank yous to send</td>
+		<td></td>
+		<td></td>
+	</tr>
+{% endif %}
+</tbody>

@@ -1,0 +1,27 @@
+<thead>
+	<th>Name</th>
+	<th>Date to send</th>
+	<th>Method</th>
+	<th>Note</th>
+	<th></th>
+</thead>
+<tbody>
+{% for message in messages %}
+	<tr>
+			<td>{{message.contact.first_name}} {% if message.contact.spouse_name != None and message.contact.spouse_name != '' %}and {{message.contact.spouse_name}} {% endif %}{{message.contact.last_name}}</td> 
+			<td>{{message.date_to_send}}</td>	
+			<td>{{message.method}}</td>
+			<td>{{message.note}}</td>
+			<td><a class="modalConnect" href="/{{message.pk}}/record_message/" table_to_update="#tabTable" modal="#messageFormModal">Mark as sent</a></td>
+	</tr>
+{% endfor %}
+{% if not messages %}
+	<tr>
+		<td>No messages scheduled</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+{% endif %}
+</tbody>

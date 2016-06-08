@@ -1,0 +1,107 @@
+{% load crispy_forms_tags %}
+{{stageForm.media}}
+	
+	<div class='stageDiv'>
+		{{ stageForm.stage|as_crispy_field }}
+		{{ stageForm.errors }}
+	</div>
+	<div class="container">
+		<div class='messageDiv'>
+			{{ stageForm.message_date|as_crispy_field }}
+			{{ stageForm.message_method|as_crispy_field }}
+			{{ stageForm.message_note|as_crispy_field }}
+		</div>
+		<div class='callDiv'>
+			{{ stageForm.call_date|as_crispy_field }}
+			{{ stageForm.call_note|as_crispy_field }}
+		</div>
+		<div class='meetingDiv'>
+			{{ stageForm.meeting_date|as_crispy_field }}
+			{{ stageForm.meeting_time|as_crispy_field }}
+			{{ stageForm.meeting_location|as_crispy_field }}
+			{{ stageForm.meeting_note|as_crispy_field }}
+		</div>
+		<div class='thankYouDiv'>
+			{{ stageForm.thank_you_date|as_crispy_field }}
+			{{ stageForm.thank_you_note|as_crispy_field }}
+		</div>
+		<div class='followUpDiv'>
+			{{ stageForm.follow_up_date|as_crispy_field }}
+			{{ stageForm.follow_up_time|as_crispy_field }}
+			{{ stageForm.follow_up_method|as_crispy_field }}
+			{{ stageForm.follow_up_note|as_crispy_field }}		
+		</div>
+	</div>
+
+	<script>
+	function updateStageInfo(element) {
+		if ($(element).val() == 'GET_INFO'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'MESSAGE'){
+			$('.messageDiv').show();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'CALL'){
+			$('.messageDiv').hide();
+			$('.callDiv').show();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'MEET'){
+			console.log('meeting')
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').show();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'THANK'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').show();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'FOLLOW_UP'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').show();		
+		} else if ($(element).val() == 'STOP'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'WAIT'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		} else if ($(element).val() == 'MAINTAIN'){
+			$('.messageDiv').hide();
+			$('.callDiv').hide();
+			$('.meetingDiv').hide();
+			$('.thankYouDiv').hide();
+			$('.followUpDiv').hide();
+		}
+	}
+	
+	$('.stageSelect').change(function() {
+		updateStageInfo(this);
+	});
+	
+	$(document).ready(function(){
+		$('.messageDiv').hide();
+		$('.callDiv').hide();
+		$('.meetingDiv').hide();
+		$('.thankYouDiv').hide();
+		$('.followUpDiv').hide();
+	});
+	</script>

@@ -1,0 +1,30 @@
+{% load extra_tags %}
+<nothing></nothing>
+{% for rel in rels %}
+<tr>
+		<td><a class='modalConnect' href="/{{rel.supporter.pk}}/contact_info/" modal='#contactInfoModal'>{{rel.supporter.first_name}} {% if rel.supporter.spouse_name != None and rel.supporter.spouse_name != '' %}and {{rel.supporter.spouse_name}} {% endif %}{{rel.supporter.last_name}}</a></td>
+		<td>{{rel.amount}}</td>
+		<td>{{rel.frequency}}</td>
+		<td>{{rel.start_date}}</td>
+		<td><button class='deleteSupportRel btn btn-info' data-url='{{rel.pk}}/delete_gift'>delete</button></td>
+</tr>
+{% endfor %}
+{% if not rels %}
+<tr>
+	<td>You don't have any supporters! Better get to work!</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+{% endif %}
+{% if rels %}
+<tr>
+	<td><b>Monthly total: {{ total_month|prepend_dollars }}</b></td>
+	<td><b>Yearly total: {{ total_year|prepend_dollars }}</b></td>
+	<td><b>Support percentage: {{ pct }}%</b></td>
+	<td></td>
+	<td></td>
+</tr>
+{% endif %}
+</tbody>

@@ -1,0 +1,17 @@
+{% extends "supporttracker/base.html" %}
+{% if not rel %}
+<p>You do not have access to this page</p>
+{% else %}
+<h1>{{rel.supporter.first_name}} {{rel.supporter.last_name}}</h1>
+<p>Phone: {{rel.supporter.phone_number}}<br>
+Email: {{rel.supporter.email_address}}<br>
+Address: <br>{{rel.supporter.street_address}}<br>{{rel.supporter.city}},{{rel.supporter.state}} {{rel.supporter.zip}}</p>
+
+<p>
+{{rel.amount}} {{rel.frequency}}
+</p>
+{% endif %}
+
+<p><a href='{{rel.pk}}/edit_gift/'>Edit this gift</a></p>
+<p><a href='/profile/'>Back to your profile</a></p>
+<p><a href='/supporters/'>Back to your supporter list</a></p>

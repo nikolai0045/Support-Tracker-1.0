@@ -1,0 +1,71 @@
+{% extends 'supporttracker/base.html' %}
+
+{% block scripts %} 
+<script type="text/javascript">
+	$(document).ready(function() {
+		modalConnect();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ajaxStop(function(){
+		modalConnect();
+	});
+</script>
+<script type="text/javascript">
+	function modalConnect(){
+		$(".modalConnect").unbind('click');
+		$(".modalConnect").click(function(ev){
+			ev.preventDefault();
+			var url = this.href;
+			var modal = $(this).attr('modal');
+			$.get(url, function(data){
+				var info = $("#ajax_info_modal_result",data);
+				$(modal).empty().append(info);
+				$(modal).modal({show:true});
+			}, "html");
+			return false;
+		});
+	}
+	
+</script>
+
+{% endblock scripts %}
+
+{% block content %}
+
+	<div id="contactInfoModal" class="modal fade" role="dialog"></div>
+<div class = 'container'>
+	<h3>Current Contacts</h3>
+	<div class="table-responsive">
+		<table class="table table-condensed table-hover">
+			<thead>
+				<th>Name</th>
+				<th>Phone Number</th>
+				<th>Address</th>
+				<th>Stage</th>
+			</thead>
+			<tbody data-link="row" class="rowlink">
+			{% for rel in rels %}
+				<tr>
+						<td><a class='modalConnect' href="/{{rel.contact.pk}}/contact_info/" modal='#contactInfoModal'>{{rel.contact.first_name}} {% if rel.contact.spouse_name != None and rel.contact.spouse_name != '' %}and {{rel.contact.spouse_name}} {% endif %}{{rel.contact.last_name}}</a></td>
+						<td>{{rel.contact.phone_number}}</td>
+						<td>{{rel.contact.street_address}}</br>{{rel.contact.city}}{% if rel.contact.state != '' and rel.contact.zip != '' %}, {{rel.contact.state}} {{rel.contact.zip}}{%endif%}</td>
+						<td>{{rel.get_stage_display}}</td>
+					
+				</tr>
+			{% endfor %}
+			
+			{% if not rels %}
+				<tr>
+					<td>You don't have any contacts! Better get to work!</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			{% endif %}
+			</tbody>
+		</table>
+		<a href='/new_contact/'>Add a new contact</a>
+	</div>
+</div>
+{% endblock content %}

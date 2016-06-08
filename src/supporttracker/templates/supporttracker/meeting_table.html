@@ -1,0 +1,28 @@
+<thead>
+	<th>Name</th>
+	<th>Date</th>
+	<th>Time</th>
+	<th>Location</th>
+	<th></th>
+</thead>
+<tbody>
+	{% for meeting in meetings %}
+		<tr id="meetingRow{{meeting.pk}}">
+				<td>{{meeting.contact.first_name}} {% if meeting.contact.spouse_name != None and meeting.contact.spouse_name != '' %}and {{meeting.contact.spouse_name}} {% endif %}{{meeting.contact.last_name}}</td>
+				<td>{{meeting.date}}</td>
+				<td>{{meeting.time}}</td>
+				<td>{{meeting.location}}</td>
+				<td><a class="recordMeeting modalConnect" href="/{{meeting.pk}}/record_meeting/" table_to_update="#tabTable" modal="#meetingFormModal">Record</input></td>
+		</tr>
+	{% endfor %}
+	{% if not meetings %}
+		<tr>
+			<td>No meetings scheduled</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	{% endif %}
+</tbody>
+

@@ -1,0 +1,183 @@
+{% extends "supporttracker/base.html" %}
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		modalConnect();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ajaxStop(function(){
+		modalConnect();
+	});
+</script>
+<script type="text/javascript">
+	function modalConnect(){
+		$(".modalConnect").unbind('click');
+		$(".modalConnect").click(function(ev){
+			ev.preventDefault();
+			var url = this.href;
+			var table_to_update = $(this).attr('table_to_update');
+			var modal = $(this).attr('modal');
+			$.get(url, function(data){
+				var form = $("#ajax_form_modal_result",data);
+				$(modal).empty().append(form);
+				$(modal).modal({show:true});
+				$(document).ready(function(){
+					console.log(table_to_update);
+					submitModalFormBind(url,modal,table_to_update);
+				});
+			}, "html");
+			return false;
+		});
+	}
+	
+</script>
+<script type="text/javascript">
+	function submitModalFormBind(url,modal,table){
+        $(modal + ',#ajax_form_modal_result').submit(function(ev){
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $(this).serialize(),
+                success:function(response, textStatus, jqXHR){
+                    var form = $("#ajax_form_modal_result_div", response);
+                    if (form.html()) {
+                        $('#ajax_form_modal_result_div').html(form);
+                        $(modal).modal('show');
+                    }
+                    else{
+                        $(table).empty().append(response);
+						console.log(table)
+						console.log(modal)
+						$(modal).empty();
+                        $(modal).modal('hide');
+                    }
+                },
+                error: function (request, status, error) {
+                            var div = $("ajax_form_modal_result_div", request.responseText);
+                            $(modal + ',#ajax_form_modal_result_div').html(div);
+                            console.log("failure");
+                            console.log(request.responseText);
+                        }
+            });
+            return false;
+        });
+    }
+</script>
+
+{% endblock scripts %}
+
+{% block content %}
+<div id="callFormModal" class="modal fade" role="dialog"></div>
+
+<div id="meetingFormModal" class="modal fade" role="dialog"></div>
+
+<div id="followUpFormModal" class="modal fade" role="dialog"></div>
+
+<div id="reminderFormModal" class="modal fade" role="dialog"></div>
+
+<div id="messageFormModal" class="modal fade" role="dialog"></div>
+
+<div id="thankYouModal" class="modal fade" role="dialog"></div>
+
+<div id="scheduleMeetingModal" class="modal fade" role="dialog"></div>
+
+<div id="scheduleMessageModal" class="modal fade" role="dialog"></div>
+
+<div id="scheduleFollowUpModal" class="modal fade" role="dialog"></div>
+
+<div id="scheduleReminderModal" class="modal fade" role="dialog"></div>
+
+<div class="tab-content container">
+	<ul class="nav nav-tabs">
+		<li class='active'><a data-toggle='tab' href='#urgent'>Urgent</a></li>
+		<li><a data-toggle="tab" href="#messages">Messages</a></li>
+		<li><a data-toggle="tab" href="#calls">Calls</a></li>
+		<li><a data-toggle="tab" href="#meetings">Meetings</a></li>  
+		<li><a data-toggle="tab" href="#follow_ups">Follow Ups</a></li>
+		<li><a data-toggle="tab" href="#thankYous">Thank Yous</a></li>
+		<li><a data-toggle="tab" href="#reminders">Reminders</a></li>
+	</ul>
+</div>
+
+<div class='tab-content container' id='tabTable'>
+	{% include 'supporttracker/tabTable.html' %}
+</div>
+
+
+<!-- <div class="tab-content container">
+	<div id="meetings" class="tab-pane fade">
+	<h3>Meetings</h3>
+		<div class="table-responsive">
+			<table id="meetingTable" class="table table-condensed table-hover">
+				{% include "supporttracker/meeting_table.html" %}
+			</table>
+		</div>
+	<hr>
+	<i><a href='/new_meeting/' table_to_update="#meetingTable" modal="#meetingFormModal" class="modalConnect">Schedule a new meeting</a></i></br>
+	<i><a href='/record_meeting/' table_to_update="#meetingTable" modal="#meetingFormModal" class="modalConnect">Record a meeting that isn't listed here</a></i>
+	</div>
+  
+	<div id="calls" class="tab-pane fade">
+	<h3>Calls to make</h3>
+		<div class="table-responsive">
+			<table id="callTable" class="table table-condensed table-hover">
+				{% include 'supporttracker/call_table.html' %}
+			</table>
+		</div>
+	<hr>
+	<i><a href='/record_call/' table_to_update='#callTable' modal='#callFormModal' class='modalConnect'>Record a call that isn't listed here</a></i>
+	</br>
+	<i><a href='/schedule_call/' table_to_update='#callTable' modal='#scheduleMessageModal' class='modalConnect'>Schedule a call</a></i>
+	</div>
+  
+	<div id="thankYous" class="tab-pane fade">
+	<h3>Thank Yous</h3>
+		<div class="table-responsive">
+			<table id="thankYouTable" class="table table-condensed table-hover">
+				{% include 'supporttracker/thank_you_table.html' %}
+			</table>
+		</div>
+	<hr>
+	<i><a href='/record_thank_you/' table_to_update='#thankYouTable' modal='#thankYouModal' class='modalConnect'>Record a thank you not listed here</a></i>
+	</br>
+	<i><a href='/schedule_thank_you/' table_to_update='#thankYouTable' modal='#thankYouModal' class='modalConnect'>Schedule a thank you</a></li>
+	</div>
+  
+	<div id="follow_ups" class="tab-pane fade">
+		<h3>Follow Ups to Conduct</h3>
+		<div class="table-responsive">
+			<table id="followUpTable" class="table table-condensed table-hover">
+				{% include 'supporttracker/follow_up_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/record_follow_up/' table_to_update='#followUpTable' modal='#followUpFormModal' class='modalConnect'>Record a follow up not listed here</a></i>
+		</br>
+		<i><a href='/schedule_follow_up/' table_to_update='#followUpTable' modal='#scheduleFollowUpModal' class='modalConnect'>Schedule a follow up</a></i>
+	</div>
+  
+	<div id="messages" class="tab-pane fade in active">
+		<h3>Messages to send</h3>
+			<div class="table-responsive">
+				<table id = "messageTable" class="table table-condensed table-hover">
+					{% include 'supporttracker/message_table.html' %}
+				</table>
+			</div>
+		<hr>
+		<i><a href='/schedule_message/' table_to_update='#messageTable' modal='#scheduleMessageModal' class='modalConnect'>Schedule a new message</a></i></br>
+		<i><a href='/record_message/' table_to_update='#messageTable' modal='#messageFormModal' class='modalConnect'>Record a message that isn't listed here</a></i>
+	</div>
+  
+	<div id="reminders" class="tab-pane fade">
+		<h3>Reminders</h3>
+		<div class="table-responsive">
+			<table id = 'reminderTable' class="table table-condensed table-hover">
+				{% include 'supporttracker/reminder_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/new_reminder/' table_to_update='#reminderTable' modal='#scheduleReminderModal' class='modalConnect'>Schedule a new reminder</a></i>
+	</div>
+</div>
+ -->{% endblock content %}

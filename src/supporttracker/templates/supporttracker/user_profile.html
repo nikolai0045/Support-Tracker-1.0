@@ -1,0 +1,60 @@
+{% extends "supporttracker/base.html" %}
+{% block content %}
+<div class='container'>
+	<h1>{{userProfile}}</h1>
+	<div class='col-md-4'>
+		<h3>Staff Information </h3>
+		<table class='table table-condensed'>
+			<tr>
+				<td>Email Address</td>
+				<td>{{user.email}}</td>
+			</tr>
+			<tr>
+				<td>Address</td>
+				<td>{{userProfile.street_address}}</br>{{userProfile.city}}, {{userProfile.state}} {{userProfile.zip}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class='col-md-4'>
+		<h3>Procedures</h3>
+		<table class='table table-condensed'>
+			<tr>
+				<td>Phone calls</td>
+				<td>{{numCalls}}</td>
+			</tr>
+			<tr>
+				<td>Voice mails</td>
+				<td>{{numVoiceMails}}</td>
+			</tr>
+			<tr>
+				<td>Messages</td>
+				<td>{{numMessages}}</td>
+			</tr>
+			<tr>
+				<td>Meetings</td>
+				<td>{{numMeetings}}</td>
+			</tr>
+			<tr>
+				<td>Voice mails</td>
+				<td>{{numVoiceMails}}</td>
+			</tr>
+			<tr>
+				<td>Follow ups</td>
+				<td>{{numFollowUps}}</td>
+			</tr>
+			<tr>
+				<td>Referrals</td>
+				<td>{{numReferrals}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class='col-md-4'>
+		<h3>Progress</h3>
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{pct}}" aria-valuemin="0" aria-valuemax="100" style="width:{{pct}}%">
+				<span>{{pct}}%</span>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

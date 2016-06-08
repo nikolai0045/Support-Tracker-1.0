@@ -1,0 +1,48 @@
+{% extends "supporttracker/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+	<script>
+	$(document).ready(function() {
+		prepPasswordFormSubmit();
+	});
+	
+	$(document).ajaxStop(function(){
+		prepPasswordFormSubmit();
+	});
+	
+	function prepPasswordFormSubmit() {
+		$('#change_password_form').submit(function(ev){
+			event.preventDefault();
+			$.ajax({
+				type:"POST",
+				url:'/change_password/',
+				data:$(this).serialize(),
+				success:function(response,textStatus,jqXHR){
+					var form = $('#formDiv',response);
+					var message = $('#password_change_alert',response);
+					console.log(message);
+					if (form.html()) {
+						$('#change_password_div').html(form);
+						$('#messages_to_user').html(message);
+					}
+					else {
+						$('#change_password_div').remove();
+						$('#messages_to_user').html(message);
+					}
+				}
+			});	
+		});
+	}
+	</script>
+{% endblock scripts %}
+
+{% block content %}
+<div class='container'>
+	<div class='col-xs-12' id='messages_to_user'>
+	</div>
+	<div class='col-md-6' id='change_password_div'>
+		{% include 'supporttracker/change_password.html' %}
+	</div>
+</div>
+{% endblock content %}

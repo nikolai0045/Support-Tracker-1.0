@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-dialog modal-sm">
+	<form id="ajax_form_modal_result" class="modal-content" method="post" action="/new_reminder/">
+		<div id="ajax_form_modal_result_div">
+			{{form.media}}
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>Schedule Reminder</h4>
+			</div>
+			
+			<div class="modal-body">
+				{% csrf_token %}
+				<div class="form-group">
+					{{form|crispy}}	
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button class="btn btn-primary" type="submit" name="submit">Save</button>
+			</div>
+		</div>
+	</form>
+</div>
+

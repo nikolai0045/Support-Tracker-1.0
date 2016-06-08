@@ -1,0 +1,130 @@
+	<div id='urgent' class='{{urgentClasses}}'>
+		<h3>Due and Overdue Actions</h3>
+		<div class='table-responsive'>
+			<table id='urgentTable' class='table table-condensed table-hover'>
+				<thead>
+					<th>Complete by</th>
+					<th>Action type</th>
+					<th>Contact</th>
+					<th>Info</th>
+					<th></th>
+				</thead>
+				<tbody>
+					{% for meeting in urgent_meetings %}
+						<tr>
+							<td>{{meeting.date}} at {{meeting.time}}</td>
+							<td>Meeting</td>
+							<td>{{meeting.contact.first_name}} {% if meeting.contact.spouse_name != None and meeting.contact.spouse_name != '' %}and {{meeting.contact.spouse_name}} {% endif %}{{meeting.contact.last_name}}</td>
+							<td>{{meeting.location}}</td>
+							<td><a class="modalConnect" href="/urgent/{{meeting.pk}}/record_meeting/" table_to_update="#tabTable" modal="#meetingFormModal">Record</input></td>
+						</tr>
+					{%endfor%}
+					{% for call in urgent_calls %}
+						<tr>
+							<td>{{call.date}}</td>
+							<td>Call</td>
+							<td>{{call.contact.first_name}} {% if call.contact.spouse_name != None and call.contact.spouse_name != '' %}and {{call.contact.spouse_name}} {% endif %}{{call.contact.last_name}}</td>
+							<td>{{call.contact.phone_number}}</td>
+							<td><a class="modalConnect" href="/urgent/{{call.pk}}/record_call/" table_to_update="#tabTable" modal="#callFormModal">Record</a></td>
+						</tr>
+					{%endfor%}
+					{% for fup in urgent_follow_ups %}
+						<tr>
+							<td>{{fup.date}}</td>
+							<td>Follow up</td>
+							<td>{{fup.contact.first_name}} {% if fup.contact.spouse_name != None and fup.contact.spouse_name != '' %}and {{fup.contact.spouse_name}} {% endif %}{{fup.contact.last_name}}</td>
+							<td>{{fup.contact.phone_number}}</td>
+							<td><a class="modalConnect" href="/urgent/{{fup.pk}}/record_follow_up/" table_to_update="#tabTable" modal="#followUpFormModal">Record</a></td>
+						</tr>
+					{%endfor%}
+					{% for message in urgent_messages %}
+						<tr>
+							<td>{{message.date_to_send}}</td>
+							<td>Message</td>
+							<td>{{message.contact.first_name}} {% if message.contact.spouse_name != None and message.contact.spouse_name != '' %}and {{message.contact.spouse_name}} {% endif %}{{message.contact.last_name}}</td> 
+							<td>{{message.method}}</td>
+							<td><a class="modalConnect" href="/urgent/{{message.pk}}/record_message/" table_to_update="#tabTable" modal="#messageFormModal">Mark as sent</a></td>
+						</tr>			
+					{%endfor%}
+					{% for ty in urgent_thank_yous %}
+						<tr>
+							<td>{{ty.date}}</td>
+							<td>Thank you note</td>
+							<td>{{ty.contact.first_name}} {% if ty.contact.spouse_name != None and ty.contact.spouse_name != '' %}and {{ty.contact.spouse_name}} {% endif %}{{ty.contact.last_name}}</td>
+							<td>{{ty.contact.street_address}}</br>{{ty.contact.city}}{% if ty.contact.state != '' and ty.contact.zip != '' %}, {{ty.contact.state}} {{ty.contact.zip}}{%endif%}</td>	
+							<td><a class="modalConnect" href="/urgent/{{ty.pk}}/record_thank_you/" table_to_update="#tabTable" modal="#thankYouModal">Record</a></td>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id='meetings' class='{{meetingClasses}}'>
+		<h3>Meetings</h3>
+		<div class='table-responsive'>
+			<table id='meetingTable' class='table table-condensed'>
+				{% include "supporttracker/meeting_table.html" %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/new_meeting/' table_to_update="#meetingTable" modal="#meetingFormModal" class="modalConnect">Schedule a new meeting</a></i></br>
+		<i><a href='/record_meeting/' table_to_update="#tabTable" modal="#meetingFormModal" class="modalConnect">Record a meeting that isn't listed here</a></i>
+	</div>
+	<div id='calls' class='{{callClasses}}'>
+		<h3>Calls</h3>
+		<div class='table-responsive'>
+			<table id='callTable' class='table table-condensed'>
+				{% include 'supporttracker/call_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/record_call/' table_to_update='#tabTable' modal='#callFormModal' class='modalConnect'>Record a call that isn't listed here</a></i>
+		</br>
+		<i><a href='/schedule_call/' table_to_update='#callTable' modal='#scheduleMessageModal' class='modalConnect'>Schedule a call</a></i>
+	</div>
+	<div id='thankYous' class='{{thankYouClasses}}'>
+		<h3>Thank Yous</h3>
+		<div class='table-responsive'>
+			<table id='thankYouTable' class='table table-condensed'>
+				{% include 'supporttracker/thank_you_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/record_thank_you/' table_to_update='#tabTable' modal='#thankYouModal' class='modalConnect'>Record a thank you not listed here</a></i>
+		</br>
+		<i><a href='/schedule_thank_you/' table_to_update='#thankYouTable' modal='#thankYouModal' class='modalConnect'>Schedule a thank you</a></i>
+	</div>
+	<div id='follow_ups' class='{{followUpClasses}}'>
+		<h3>Follow Ups</h3>
+		<div class='table-responsive'>
+			<table id='followUpTable' class='table table-condensed'>
+				{% include 'supporttracker/follow_up_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/record_follow_up/' table_to_update='#tabTable' modal='#followUpFormModal' class='modalConnect'>Record a follow up not listed here</a></i>
+		</br>
+		<i><a href='/schedule_follow_up/' table_to_update='#followUpTable' modal='#scheduleFollowUpModal' class='modalConnect'>Schedule a follow up</a></i>
+	</div>
+	<div id='messages' class='{{messageClasses}}'>
+		<h3>Messages</h3>
+		<div class='table-responsive'>
+			<table id='messageTable' class='table table-condensed'>
+				{% include 'supporttracker/message_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/schedule_message/' table_to_update='#tabTable' modal='#scheduleMessageModal' class='modalConnect'>Schedule a new message</a></i>
+		</br>
+		<i><a href='/record_message/' table_to_update='#messageTable' modal='#messageFormModal' class='modalConnect'>Record a message that isn't listed here</a></i>
+	</div>
+	<div id='reminders' class='{{reminderClasses}}'>
+		<h3>Reminders</h3>
+		<div class='table-responsive'>
+			<table id='reminderTable' class='table table-condensed'>
+				{% include 'supporttracker/reminder_table.html' %}
+			</table>
+		</div>
+		<hr>
+		<i><a href='/new_reminder/' table_to_update='#reminderTable' modal='#scheduleReminderModal' class='modalConnect'>Schedule a new reminder</a></i>
+	</div>

@@ -1,0 +1,39 @@
+{% extends "supporttracker/base.html" %}
+{% block content %}
+
+<div class="container"> 
+	<form method="POST" role="form">
+		{% csrf_token %}
+		{{form.media}}
+
+		<fieldset class="form-group">
+			<label for="contact">Call with:</label>
+			{{form.contact}}
+			{{form.contact.errors}}
+		</fieldset>
+		<fieldset class="form-group">
+			<label for="answered">Answered?</label>
+			{{form.answered}}
+		</fieldset>
+		<fieldset class="form-group">
+			<label for="left_message">Left message?</label>
+			{{form.left_message}}
+		</fieldset>
+		<fieldset class="form-group">
+			{{form.time_called}}
+		</fieldset>
+
+
+		{% if form.subject.errors %}
+			<ol>
+			{% for error in form.subject.errors %}
+				<li><strong>{{ error|escape }}</strong></li>
+			{% endfor %}
+			</ol>
+		{% endif %}
+		
+		<button type="submit" name="submit" value="continue">Save</button>
+		<button type="submit" name="submit" value="another">Save and add another</button>
+	</form>
+</div>
+{% endblock content%}
