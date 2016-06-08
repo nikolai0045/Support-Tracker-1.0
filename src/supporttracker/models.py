@@ -94,7 +94,7 @@ class UserProfile(models.Model):
 
 class StaffPerson(UserProfile):
 
-	yearly_support_goal = models.IntegerField()
+	support_goal = models.IntegerField()
 
 	def get_support_pct(self):
 		rels = SupportRelationship.objects.filter(staff_person = self)
