@@ -84,7 +84,7 @@ class UserProfile(models.Model):
 	street_address = models.CharField(max_length=120,null=True)
 	city = models.CharField(max_length=120,null=True,blank=True)
 	state = models.CharField(max_length=2,choices=STATE_CHOICES,null=True,blank=True)
-	zip = models.charField(max_length=10,null=True,blank=True)
+	zip = models.CharField(max_length=10,null=True,blank=True)
 	
 	def __str__(self):
 		if self.spouse_name != '':
