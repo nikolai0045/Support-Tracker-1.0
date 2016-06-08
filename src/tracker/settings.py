@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 	'jquery',
 	'crispy_forms',
 	'supporttracker',
+	'localflavor',
 ]
 
 
